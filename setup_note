@@ -6,27 +6,41 @@
 # web server
 - Linux httpd (web server)
 	- "yum install httpd"
+	- "cd /var/www/html/"
+	- "git checkout <git branch>"
 	- "vim /etc/httpd/conf/httpd.conf"
 	###########################################
-	# 找到如下的設定項目，大約在 366 行左右：
+	# about line 291:
+		DocumentRoot "/var/www/html/"
+	# change to:
+		DocumentRoot "/var/www/html/beacon_project"
+
+	###########################################
+	# about line 402:
+		DirectoryIndex index.html index.html.var
+	# change to;
+		DirectoryIndex index.html index.html.var index.htm
+
+	###########################################
+	# about line 366:
 		<IfModule mod_userdir.c>
 		UserDir disable
 		#UserDir public_html
 		</IfModule> 
-	# 將他改成如下的情況喔！
+	# change to:
 		<IfModule mod_userdir.c>
 		#UserDir disable
 		UserDir www
 		</IfModule>
 
 	###########################################
-	# 找到底下這一行，大約在 797 行左右啦：
+	# about line 797:
 		#AddHandler cgi-script .cgi
-	# 改成
+	# change to:
 		AddHandler cgi-script .cgi
 
 	###########################################
-	# 然後加入底下這幾行來決定開放某個目錄的 CGI 執行權限。
+	# and add:
 		<Directory "/var/www/html/test_cgi">
 			Options +ExecCGI
 			AllowOverride None
