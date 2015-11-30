@@ -17,15 +17,48 @@ $(document).ready(function(){
 		$("li").removeClass("active");
 		$(this).addClass("active");
 	});
-	$("#cgi_test").click(function(){
-		$.getJSON("test_cgi/test.cgi");
-	});
+
+	getBeaconList();
+
 });
+
+var timer;
+var uuid;
+function getBeaconList(){
+	if(timer) clearTimeout(timer);
+	timer=setTimeout("getBeaconList()", 1000);
+	$("#beacon_list_tmp").load("beacon_list", function(data){
+		uuid=data.split(",")[0].split(":")[1];
+		console.log("UUID: "+uuid);
+		if($("#beacon_list").html()==""){
+			$("#beacon_list").append("<div>"+uuid+"</div>");
+		}else{
+			var child = document.getElementById("beacon_list");
+			var childnode=child.childNodes;
+			var child_length=childnode.length;
+			var exist=0;
+			for(var i=0; i<child_length; i++){
+				if(uuid == $(childnode[i]).html())
+					exist=1;
+			}
+			if(exist==0)
+				$("#beacon_list").append("<div>"+uuid+"</div>");
+		}
+console.log(data);
+/*
+		console.log(data.split(",")[0]);
+		console.log(data.split(",")[1]);
+		console.log(data.split(",")[2]);
+		console.log(data.split(",")[3]);
+		console.log(data.split(",")[4]);
+*/
+	});
+}
 </script>
 </head>
 <body>
 <div style="height:1000px; width:100%">
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar_list" aria-expended="false">
@@ -37,11 +70,13 @@ $(document).ready(function(){
 			<ul class="nav navbar-nav">
 				<li class="active" style="cursor:pointer"><a>iBeacon List</a></li>
 				<li class="" style="cursor:pointer"><a>Battery Status</a></li>
-				<li id="cgi_test" class="" style="cursor:pointer"><a>...</a></li>
+				<li id="cgi_test" class="" style="cursor:pointer"><a>....</a></li>
 			</ul>
 		</div>
 	</div>
 </nav>
+<div id="beacon_list_tmp" style="display:none"></div>
+<div id="beacon_list"></div>
 </div>
 </body>
 </html>
