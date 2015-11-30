@@ -41,7 +41,7 @@
 
 	###########################################
 	# and add:
-		<Directory "/var/www/html/test_cgi">
+		<Directory "/var/www/html/beacon_project/test_cgi">
 			Options +ExecCGI
 			AllowOverride None
 			Order allow,deny

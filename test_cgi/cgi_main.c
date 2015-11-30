@@ -28,7 +28,8 @@ int main(void){
 
 int setup(void){
 	mime_header("text/html");
-	printf("xxxxxxxxxxxxxx\n");
+	//printf("xxxxxxxxxxxxxx\n");
+	system("echo 'xxx' > xxx &");
 	return 0; 
 }
 

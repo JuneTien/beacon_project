@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+<title>iBeacon Battery Monitor System</title>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">   
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"> 
 <META HTTP-EQUIV="Expires" CONTENT="0"> 
@@ -15,6 +16,9 @@ $(document).ready(function(){
 	$("li").click(function(){
 		$("li").removeClass("active");
 		$(this).addClass("active");
+	});
+	$("#cgi_test").click(function(){
+		$.getJSON("test_cgi/test.cgi");
 	});
 });
 </script>
@@ -33,7 +37,7 @@ $(document).ready(function(){
 			<ul class="nav navbar-nav">
 				<li class="active" style="cursor:pointer"><a>iBeacon List</a></li>
 				<li class="" style="cursor:pointer"><a>Battery Status</a></li>
-				<li class="" style="cursor:pointer"><a>...</a></li>
+				<li id="cgi_test" class="" style="cursor:pointer"><a>...</a></li>
 			</ul>
 		</div>
 	</div>
