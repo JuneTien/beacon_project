@@ -1,3 +1,37 @@
-1. hciconfig hci0 down and up.
-2. "hcitool lescan --duplicates 1>/dev/null &" need to run first.
-3. ./ibeacon_scan
+# system configuration
+- hciconfig hci0 down and up.
+- "hcitool lescan --duplicates 1>/dev/null &" need to run first.
+- ./ibeacon_scan (need to modify)
+
+# web server
+- Linux httpd (web server)
+	- "yum install httpd"
+	- "vim /etc/httpd/conf/httpd.conf"
+	###########################################
+	# 找到如下的設定項目，大約在 366 行左右：
+		<IfModule mod_userdir.c>
+		UserDir disable
+		#UserDir public_html
+		</IfModule> 
+	# 將他改成如下的情況喔！
+		<IfModule mod_userdir.c>
+		#UserDir disable
+		UserDir www
+		</IfModule>
+
+	###########################################
+	# 找到底下這一行，大約在 797 行左右啦：
+		#AddHandler cgi-script .cgi
+	# 改成
+		AddHandler cgi-script .cgi
+
+	###########################################
+	# 然後加入底下這幾行來決定開放某個目錄的 CGI 執行權限。
+		<Directory "/var/www/html/test_cgi">
+			Options +ExecCGI
+			AllowOverride None
+			Order allow,deny
+			Allow from all
+		</Directory>
+	###########################################
+	- "service httpd restart"
