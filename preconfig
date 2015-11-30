@@ -1,0 +1,6 @@
+#!/bin/bash
+killall -9 hcitool
+hciconfig hci0 down
+hciconfig hci0 up
+hcitool lescan --duplicates 1>/dev/null &
+

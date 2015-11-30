@@ -1,7 +1,8 @@
 # system configuration
-- hciconfig hci0 down and up.
-- "hcitool lescan --duplicates 1>/dev/null &" need to run first.
-- ./ibeacon_scan (need to modify)
+- "./preconfig"
+#- hciconfig hci0 down and up.
+#- "hcitool lescan --duplicates 1>/dev/null &" need to run first.
+- "./ibeacon_scan" (need to modify)
 
 # web server
 - Linux httpd (web server)
