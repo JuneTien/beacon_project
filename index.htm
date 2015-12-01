@@ -12,10 +12,26 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script language='javascript' type="text/javascript">
+var total_beacon_num=0;
+var beacon_list_array=[];/*={
+	uuid:"",
+	major:"",
+	minor:"",
+	power:"",
+	rssi:""
+};
+*/
 $(document).ready(function(){
 	$("li").click(function(){
 		$("li").removeClass("active");
 		$(this).addClass("active");
+		if($(this).attr("id")=="menu_beacon_list"){
+			$("#beacon_list_pg").show();
+			$("#battery_status_pg").hide();
+		}else{
+			$("#battery_status_pg").show();
+			$("#beacon_list_pg").hide();
+		}
 	});
 
 	getBeaconList();
@@ -28,7 +44,37 @@ function getBeaconList(){
 	if(timer) clearTimeout(timer);
 	timer=setTimeout("getBeaconList()", 1000);
 	$("#beacon_list_tmp").load("beacon_list", function(data){
-		uuid=data.split(",")[0].split(":")[1];
+		var exist=0;
+		var tmp_list={
+			uuid:data.split(",")[0].split(":")[1],
+			major:data.split(",")[1].split(":")[1],
+			minor:data.split(",")[2].split(":")[1],
+			power:data.split(",")[3].split(":")[1],
+			rssi:data.split(",")[4].split(":")[1]
+		};
+		if(total_beacon_num==0){
+			beacon_list_array.push(tmp_list);
+			total_beacon_num++;
+		}else{
+			for(var i=0; i<total_beacon_num; i++){
+				if(beacon_list_array[i].uuid==tmp_list.uuid){
+					exist=1;
+					// update info
+					beacon_list_array[i].major = data.split(",")[1].split(":")[1];
+					beacon_list_array[i].minor = data.split(",")[2].split(":")[1];
+					beacon_list_array[i].power = data.split(",")[3].split(":")[1];
+					beacon_list_array[i].rssi = data.split(",")[4].split(":")[1];
+				}
+			}
+			if(exist==0){
+				beacon_list_array.push(tmp_list);
+				total_beacon_num++;
+			}
+		}
+console.log("total_beacon_num: "+total_beacon_num);
+		table_generator();
+//		uuid=data.split(",")[0].split(":")[1];
+/*
 		console.log("UUID: "+uuid);
 		if($("#beacon_list").html()==""){
 			$("#beacon_list").append("<div>"+uuid+"</div>");
@@ -36,7 +82,6 @@ function getBeaconList(){
 			var child = document.getElementById("beacon_list");
 			var childnode=child.childNodes;
 			var child_length=childnode.length;
-			var exist=0;
 			for(var i=0; i<child_length; i++){
 				if(uuid == $(childnode[i]).html())
 					exist=1;
@@ -44,6 +89,7 @@ function getBeaconList(){
 			if(exist==0)
 				$("#beacon_list").append("<div>"+uuid+"</div>");
 		}
+*/
 console.log(data);
 /*
 		console.log(data.split(",")[0]);
@@ -53,6 +99,22 @@ console.log(data);
 		console.log(data.split(",")[4]);
 */
 	});
+}
+
+function table_generator(){
+	$("#list_content").html("");
+	for(var i=0; i<total_beacon_num; i++){
+		$("#list_content").append(
+			"<tr>"+
+				"<th>"+(i+1)+"</th>"+
+				"<td>"+beacon_list_array[i].uuid+"</td>"+
+				"<td>"+beacon_list_array[i].major+"</td>"+
+				"<td>"+beacon_list_array[i].minor+"</td>"+
+				"<td>"+beacon_list_array[i].power+"</td>"+
+				"<td>"+beacon_list_array[i].rssi+"</td>"+
+			"</tr>"
+		);
+	}
 }
 </script>
 </head>
@@ -68,15 +130,45 @@ console.log(data);
 		</div>
 		<div class="collapse navbar-collapse" id="navbar_list">
 			<ul class="nav navbar-nav">
-				<li class="active" style="cursor:pointer"><a>iBeacon List</a></li>
-				<li class="" style="cursor:pointer"><a>Battery Status</a></li>
+				<li id="menu_beacon_list" class="active" style="cursor:pointer"><a>iBeacon List</a></li>
+				<li id="menu_battery_status" class="" style="cursor:pointer"><a>Battery Status</a></li>
 				<li id="cgi_test" class="" style="cursor:pointer"><a>....</a></li>
 			</ul>
 		</div>
 	</div>
 </nav>
-<div id="beacon_list_tmp" style="display:none"></div>
-<div id="beacon_list"></div>
+<div id="beacon_list_pg">
+	<div id="beacon_list_tmp" style="display:none"></div>
+	<div id="beacon_list">
+		<table class="table table-hover" style="width:80%">
+			<thead>
+				<tr class="info">
+					<th>#</th>
+					<th>UUID</th>
+					<th>Major</th>
+					<th>Minor</th>
+					<th>Power</th>
+					<th>RSSI</th>
+				</tr>
+			</thead>
+			<tbody id="list_content">
+			<!--
+				<tr>
+					<th>1</th>
+					<td>UUID_string</td>
+					<td>12</td>
+					<td>354</td>
+					<td>-59</td>
+					<td>-44</td>
+				</tr>
+			-->
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="battery_status_pg" style="display:none">
+Comming soon ...
+</div>
 </div>
 </body>
 </html>
