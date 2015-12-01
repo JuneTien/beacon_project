@@ -44,6 +44,7 @@ function getBeaconList(){
 	if(timer) clearTimeout(timer);
 	timer=setTimeout("getBeaconList()", 1000);
 	$("#beacon_list_tmp").load("beacon_list", function(data){
+		if(!data.match("UUID")) return;
 		var exist=0;
 		var tmp_list={
 			uuid:data.split(",")[0].split(":")[1],
