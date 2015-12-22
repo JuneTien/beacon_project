@@ -28,9 +28,19 @@ $(document).ready(function(){
 		if($(this).attr("id")=="menu_beacon_list"){
 			$("#beacon_list_pg").show();
 			$("#battery_status_pg").hide();
-		}else{
+			$("#battery_prediction_pg").hide();
+		}else if($(this).attr("id")=="menu_battery_status"){
 			$("#battery_status_pg").show();
 			$("#beacon_list_pg").hide();
+			$("#battery_prediction_pg").hide();
+		}else if($(this).attr("id")=="menu_battery_prediction"){
+			$("#battery_prediction_pg").show();
+			$("#beacon_list_pg").hide();
+			$("#battery_status_pg").hide();
+		}else{
+			$("#beacon_list_pg").hide();
+			$("#battery_status_pg").hide();
+			$("#battery_prediction_pg").hide();
 		}
 	});
 
@@ -133,6 +143,7 @@ function table_generator(){
 			<ul class="nav navbar-nav">
 				<li id="menu_beacon_list" class="active" style="cursor:pointer"><a>iBeacon List</a></li>
 				<li id="menu_battery_status" class="" style="cursor:pointer"><a>Battery Status</a></li>
+				<li id="menu_battery_prediction" class="" style="cursor:pointer"><a>Battery Prediction</a></li>
 				<li id="cgi_test" class="" style="cursor:pointer"><a>....</a></li>
 			</ul>
 		</div>
@@ -166,8 +177,16 @@ function table_generator(){
 			</tbody>
 		</table>
 	</div>
+<div style="width:39px; height:33px; background-image:url('./images/battery_icon.png'); background-position:0px 0px"></div>
+<br>
+<div style="width:39px; height:33px; background-image:url('./images/battery_icon.png'); background-position:0px -40px"></div>
 </div>
 <div id="battery_status_pg" style="display:none">
+Battery Status <br>
+Comming soon ...
+</div>
+<div id="battery_prediction_pg" style="display:none">
+Battery Prediction <br>
 Comming soon ...
 </div>
 </div>
