@@ -9,6 +9,7 @@
 <script language="javascript" type="text/javascript" src="js/jquery.js" ></script>
 <script language="javascript" type="text/javascript" src="js/bootstrap.min.js"></script>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/battery.css" rel="stylesheet" media="screen">
 <link rel="icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script language='javascript' type="text/javascript">
@@ -122,6 +123,7 @@ function table_generator(){
 		$("#list_content").append(
 			"<tr>"+
 				"<th>"+(i+1)+"</th>"+
+				"<th>"+"</th>"+
 				"<td>"+beacon_list_array[i].uuid+"</td>"+
 				"<td>"+beacon_list_array[i].major+"</td>"+
 				"<td>"+beacon_list_array[i].minor+"</td>"+
@@ -156,34 +158,47 @@ function table_generator(){
 <div id="beacon_list_pg">
 	<div id="beacon_list_tmp" style="display:none"></div>
 	<div id="beacon_list">
-		<table class="table table-hover" style="width:80%">
+		<table class="table table-hover" style="width:80%;">
 			<thead>
 				<tr class="info">
 					<th>#</th>
+					<th></th>
 					<th>UUID</th>
 					<th>Major</th>
 					<th>Minor</th>
-					<th>Power</th>
+					<th>TX Power</th>
 					<th>RSSI</th>
 				</tr>
 			</thead>
 			<tbody id="list_content">
-			<!--
 				<tr>
 					<th>1</th>
+					<th><div class="battery_0"></div></th>
 					<td>UUID_string</td>
 					<td>12</td>
 					<td>354</td>
 					<td>-59</td>
 					<td>-44</td>
 				</tr>
-			-->
 			</tbody>
 		</table>
 	</div>
-	<div style="width:39px; height:33px; background-image:url('./images/battery_icon.png'); background-position:0px 0px"></div>
-	<br>
-	<div style="width:39px; height:33px; background-image:url('./images/battery_icon.png'); background-position:0px -40px"></div>
+	<!-- battery sample -->
+	<div style="display:none">
+		<div class="battery_0"></div>
+		<br>
+		<div class="battery_10"></div>
+		<br>
+		<div class="battery_30"></div>
+		<br>
+		<div class="battery_50"></div>
+		<br>
+		<div class="battery_80"></div>
+		<br>
+		<div class="battery_100"></div>
+		<br>
+	</div>
+	<!-- battery sample -->
 </div>
 <div id="battery_status_pg" style="display:none">
 Battery Status <br>
