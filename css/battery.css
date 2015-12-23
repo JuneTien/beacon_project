@@ -1,0 +1,6 @@
+.battery_0 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:0px -2px }
+.battery_10 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:-114px -2px }
+.battery_30 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:-304px -2px }
+.battery_50 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:-152px -40px }
+.battery_80 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:0px -78px }
+.battery_100 { width:39px; height:33px; background-image:url('../images/battery_icon.png'); background-position:-303px -78px }
