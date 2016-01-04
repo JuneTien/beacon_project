@@ -131,6 +131,20 @@ function table_generator(){
 				"<td>"+beacon_list_array[i].rssi+"</td>"+
 			"</tr>"
 		);
+		$("#status_content").append(
+			"<tr>"+
+				"<td>"+(i+1)+"</td>"+
+				"<td><div class='battery_0'></div></td>"+
+				"<td>"+beacon_list_array[i].uuid+"</td>"+
+			"<tr>"
+		);
+		$("#prediction_content").append(
+			"<tr>"+
+				"<td>"+(i+1)+"</td>"+
+				"<td>"+beacon_list_array[i].uuid+"</td>"+
+				"<td>2 Days, 20 Hours</td>"+
+			"<tr>"
+		);
 	}
 }
 </script>
@@ -171,9 +185,9 @@ function table_generator(){
 				</tr>
 			</thead>
 			<tbody id="list_content">
-				<tr>
-					<th>1</th>
-					<th><div class="battery_0"></div></th>
+				<tr style="display:none">
+					<td>1</td>
+					<td><div class="battery_0"></div></td>
 					<td>UUID_string</td>
 					<td>12</td>
 					<td>354</td>
@@ -201,12 +215,40 @@ function table_generator(){
 	<!-- battery sample -->
 </div>
 <div id="battery_status_pg" style="display:none">
-Battery Status <br>
-Comming soon ...
+	<table class="table table-hover" style="width:80%;">
+		<thead>
+			<tr class="info">
+				<th>#</th>
+				<th>Battery Power</th>
+				<th>UUID</th>
+			</tr>
+		</thead>
+		<tbody id="status_content">
+			<tr style="display:none">
+				<td>1</td>
+				<td><div class="battery_0"></div></td>
+				<td>UUID_string</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 <div id="battery_prediction_pg" style="display:none">
-Battery Prediction <br>
-Comming soon ...
+	<table class="table table-hover" style="width:80%;">
+		<thead>
+			<tr class="info">
+				<th>#</th>
+				<th>UUID</th>
+				<th>Battery Power Remaining</th>
+			</tr>
+		</thead>
+		<tbody id="prediction_content">
+			<tr style="display:none">
+				<td>1</td>
+				<td>UUID_string</td>
+				<td>2 Days, 20 Hours</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 <div id="battery_plot_pg" style="display:none"></div>
 </div>
