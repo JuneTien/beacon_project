@@ -23,7 +23,8 @@ var beacon_list_array=[];/*={
 };
 */
 $(document).ready(function(){
-	$("li").click(function(){
+	$("#navbar_list > ul > li").click(function(){
+		$("#setting_pg").hide();
 		$("li").removeClass("active");
 		$(this).addClass("active");
 		if($(this).attr("id")=="menu_beacon_list"){
@@ -147,6 +148,23 @@ function table_generator(){
 		);
 	}
 }
+
+function setting_page(){
+	$("#beacon_list_pg").hide();
+	$("#setting_pg").show();
+}
+
+function check_setting(){
+	var checked = confirm("Are you sure the settings is correct?");
+	if(checked){
+		// save setting
+		$("#setting_pg").hide();
+		$("#beacon_list_pg").show();
+	}else{
+		return;
+	}
+}
+
 </script>
 </head>
 <body>
@@ -164,7 +182,7 @@ function table_generator(){
 				<li id="menu_beacon_list" class="active" style="cursor:pointer"><a>iBeacon List</a></li>
 				<li id="menu_battery_status" class="" style="cursor:pointer"><a>Battery Status</a></li>
 				<li id="menu_battery_prediction" class="" style="cursor:pointer"><a>Battery Prediction</a></li>
-				<li id="cgi_test" class="" style="cursor:pointer"><a>Battery Prediction Plot</a></li>
+				<li id="cgi_test" class="" style="cursor:pointer; display:none"><a>Battery Prediction Plot</a></li>
 			</ul>
 		</div>
 	</div>
@@ -172,27 +190,32 @@ function table_generator(){
 <div id="beacon_list_pg">
 	<div id="beacon_list_tmp" style="display:none"></div>
 	<div id="beacon_list">
-		<table class="table table-hover" style="width:80%;">
+		<table class="table table-hover">
 			<thead>
 				<tr class="info">
 					<th>#</th>
-					<th></th>
 					<th>UUID</th>
 					<th>Major</th>
 					<th>Minor</th>
 					<th>TX Power</th>
 					<th>RSSI</th>
+					<th>Settings</th>
 				</tr>
 			</thead>
 			<tbody id="list_content">
 				<tr style="display:none">
 					<td>1</td>
-					<td><div class="battery_0"></div></td>
 					<td>UUID_string</td>
 					<td>12</td>
 					<td>354</td>
 					<td>-59</td>
 					<td>-44</td>
+					<td style="display:">
+						<span class="glyphicon glyphicon-plus-sign" style="color:orange; cursor:pointer" onClick="setting_page()"></span>&nbsp;not complete
+					</td>
+					<td style="display:none">
+						<span class="glyphicon glyphicon-ok-circle" style="color:green;"></span>&nbsp;complete
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -213,6 +236,31 @@ function table_generator(){
 		<br>
 	</div>
 	<!-- battery sample -->
+</div>
+<div id="setting_pg" style="display:none">
+	<div>
+		<span>Chipset : </span>
+		<div class="dropdown">
+			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+				<span id="chipset_menu">Select chipset</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:$('#chipset_menu').html('Gimbal')">Gimbal</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:$('#chipset_menu').html('Nordic Semiconductors')">Nordic Semiconductors</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:$('#chipset_menu').html('Bluegiga')">Bluegiga</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:$('#chipset_menu').html('Texas Instruments')">Texas Instruments</a></li>
+			</ul>
+		</div>
+	</div>
+	<div>
+		<span>Setup Date : </span>
+		<input type="text" class="form-control" placeholder="YYYY/MM/DD" style="width:200px">
+	</div>
+	<div>
+		<br>
+		<button type="button" class="btn btn-success" onClick="check_setting()">Apply</button>
+	</div>
 </div>
 <div id="battery_status_pg" style="display:none">
 	<table class="table table-hover" style="width:80%;">
