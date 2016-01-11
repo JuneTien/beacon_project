@@ -13,10 +13,13 @@ cgi_lib:
 	make -C cgi
 
 install:
+	cp -a ./test.cgi ../
+
 
 clean: 
 	make -C cgi clean
 	rm -rf ${TARGET} $(OBJS) *.bak
+	rm -rf ../test.cgi
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
