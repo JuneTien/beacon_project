@@ -31,22 +31,27 @@ $(document).ready(function(){
 			$("#beacon_list_pg").show();
 			$("#battery_status_pg").hide();
 			$("#battery_prediction_pg").hide();
-			$("#battery_plot_pg").hide();
+			$("#beacon_location_plot").hide();
 		}else if($(this).attr("id")=="menu_battery_status"){
 			$("#battery_status_pg").show();
 			$("#beacon_list_pg").hide();
 			$("#battery_prediction_pg").hide();
-			$("#battery_plot_pg").hide();
+			$("#beacon_location_plot").hide();
 		}else if($(this).attr("id")=="menu_battery_prediction"){
 			$("#battery_prediction_pg").show();
 			$("#beacon_list_pg").hide();
 			$("#battery_status_pg").hide();
-			$("#battery_plot_pg").hide();
+			$("#beacon_location_plot").hide();
+		}else if($(this).attr("id")=="menu_beacon_location"){
+			$("#beacon_location_plot").show();
+			$("#beacon_list_pg").hide();
+			$("#battery_status_pg").hide();
+			$("#battery_prediction_pg").hide();
 		}else{
 			$("#beacon_list_pg").hide();
 			$("#battery_status_pg").hide();
 			$("#battery_prediction_pg").hide();
-			$("#battery_plot_pg").load("plot.htm").show();
+			$("#beacon_location_plot").show();
 		}
 	});
 
@@ -182,6 +187,7 @@ function check_setting(){
 				<li id="menu_beacon_list" class="active" style="cursor:pointer"><a>iBeacon List</a></li>
 				<li id="menu_battery_status" class="" style="cursor:pointer"><a>Battery Status</a></li>
 				<li id="menu_battery_prediction" class="" style="cursor:pointer"><a>Battery Prediction</a></li>
+				<li id="menu_beacon_location" class="" style="cursor:pointer"><a>iBeacon Location Plot</a></li>
 				<li id="cgi_test" class="" style="cursor:pointer; display:none"><a>Battery Prediction Plot</a></li>
 			</ul>
 		</div>
@@ -203,7 +209,7 @@ function check_setting(){
 				</tr>
 			</thead>
 			<tbody id="list_content">
-				<tr style="display:none">
+				<tr style="display:">
 					<td>1</td>
 					<td>UUID_string</td>
 					<td>12</td>
@@ -258,6 +264,14 @@ function check_setting(){
 		<input type="text" class="form-control" placeholder="YYYY/MM/DD" style="width:200px">
 	</div>
 	<div>
+		<span>TX Power : </span>
+		<input type="text" class="form-control" style="width:200px">
+	</div>
+	<div>
+		<span>AdvInterval (ms) : </span>
+		<input type="text" class="form-control" style="width:200px">
+	</div>
+	<div>
 		<br>
 		<button type="button" class="btn btn-success" onClick="check_setting()">Apply</button>
 	</div>
@@ -298,6 +312,9 @@ function check_setting(){
 		</tbody>
 	</table>
 </div>
+<div id="beacon_location_plot" style="display:none">
+</div>
+
 <div id="battery_plot_pg" style="display:none"></div>
 </div>
 </body>
