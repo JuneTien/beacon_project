@@ -34,7 +34,8 @@ cgi_set_data_t cgi_set_data;
 
 int setup(void);
 int upgrade(void);
-int check_infoTcount(void);
+int run_service(char *service, LIST *cgi_input);
+int set_beacon_config(LIST *cgi_input);
 
 #endif
 
