@@ -136,7 +136,7 @@ function table_generator(){
 				"<td>"+beacon_list_array[i].minor+"</td>"+
 				"<td>"+beacon_list_array[i].power+"</td>"+
 				"<td>"+beacon_list_array[i].rssi+"</td>"+
-				"<td><span class='glyphicon glyphicon-cog' style='color:#4cae4c; cursor:pointer' onClick='setting_page(\""+beacon_list_array[i].uuid+"\")'></span></td>"+
+				"<td><span class='glyphicon glyphicon-cog' style='color:#4cae4c; cursor:pointer' onClick='setting_page(\""+i+"\")'></span></td>"+
 			"</tr>"
 		);
 		$("#status_content").append(
@@ -156,9 +156,20 @@ function table_generator(){
 	}
 }
 
-function setting_page(uuid){
+function setting_page(index){
+	var data={
+		"service":"get_beacon_config",
+		"uuid":beacon_list_array[index].uuid
+	};
+	$.getJSON("test_cgi/test.cgi", data, function(ret){
+		//console.log(ret);
+		$("#config_uuid").html(beacon_list_array[index].uuid);
+		$("#config_txpower").val(beacon_list_array[index].power.split(" "));
+		$("#chipset_menu").html(ret.chipset);
+		$("#config_date").val(ret.date);
+		$("#config_interval").val(ret.interval);
+	});
 	$("#beacon_list_pg").hide();
-	$("#config_uuid").html(uuid);
 	$("#setting_pg").show();
 }
 
@@ -287,7 +298,7 @@ function check_setting(){
 	</div>
 	<div>
 		<span>TX Power : </span>
-		<input id="config_txpower" type="text" class="form-control" style="width:200px">
+		<input id="config_txpower" type="text" class="form-control" style="width:200px" disabled>
 	</div>
 	<div>
 		<span>AdvInterval (ms) : </span>

@@ -46,14 +46,15 @@ int setup(void){
 int run_service(char *service, LIST *cgi_input){
 	if(!strcmp(service, "set_beacon_config")) // save chipset by UUID
 		set_beacon_config(cgi_input);
-	else if(!strcmp(service, "get_beacon_info"))
-		get_beacon_info(cgi_input);
+	else if(!strcmp(service, "get_beacon_config"))
+		get_beacon_config(cgi_input);
 	return 0;
 }
 
 int set_beacon_config(LIST *cgi_input){
 	char *uuid=NULL, *chipset=NULL, *date=NULL, *txpower=NULL, *interval=NULL;
 	FILE *fp=NULL;
+	int exist=0;
 
 	//fprintf(stdout, "function: %s", __FUNCTION__);
 	uuid=find_val(cgi_input, "uuid");
@@ -65,28 +66,49 @@ int set_beacon_config(LIST *cgi_input){
 	
 	if( (fp=fopen("/web/beacon_conf", "r+"))==NULL ) goto err;
 	//fprintf(fp, "%s=%s|%s|%s|%s", uuid, chipset, date, txpower, interval);
-	char /*content[128]={0}, */tmp[128]={0};
-	char /**p=NULL, *pbuf=NULL,*/ *ptmp=NULL;
+	char tmp[128]={0};
+	char *ptmp=NULL;
 	char line[128]={0};
 	while(fgets(line, 128, fp)){
 		if((ptmp=strstr(line, uuid))){
+			exist=1;
 			if(fseek(fp, -strlen(line), 1)<0) goto err;
-			sprintf(tmp, "%s=%s|%s|%s|%s", uuid, chipset, date, txpower, interval);
-			fprintf(fp, "%s\n", tmp);
-		}else{
-			if(fseek(fp, 0, 2)<0) goto err;
 			sprintf(tmp, "%s=%s|%s|%s|%s", uuid, chipset, date, txpower, interval);
 			fprintf(fp, "%s\n", tmp);
 		}
 		memset(line, 0, 128);
+	}
+	if(exist==0){
+		if(fseek(fp, 0, 2)<0) goto err;
+		sprintf(tmp, "%s=%s|%s|%s|%s", uuid, chipset, date, txpower, interval);
+		fprintf(fp, "%s", tmp);
 	}
 err:
 	if(fp) fclose(fp);
 	return 0;
 }
 
-int get_beacon_info(LIST *cgi_input){
-	fprintf(stdout, "%s", __FUNCTION__);
+int get_beacon_config(LIST *cgi_input){
+	char *uuid=NULL;
+	char chipset[32]={0}, date[16]={0}, txpower[10]={0}, interval[10]={0};
+	FILE *fp=NULL;
+
+	//fprintf(stdout, "%s", __FUNCTION__);
+	uuid=find_val(cgi_input, "uuid");
+	if( (fp=fopen("/web/beacon_conf", "r+"))==NULL ) goto err;
+	char tmp[128]={0};
+	char *ptmp=NULL;
+	char line[128]={0};
+	while(fgets(line, 128, fp)){
+		if((ptmp=strstr(line, uuid))){
+			sscanf(line, "%[^=]=%[^|]|%[^|]|%[^|]|%s", uuid, chipset, date, txpower, interval);
+			sprintf(tmp, "{\"uuid\":\"%s\", \"chipset\":\"%s\", \"date\":\"%s\", \"interval\":\"%s\"}", uuid, chipset, date, interval);
+			fprintf(stdout, "%s\n", tmp);
+		}
+		memset(line, 0, 128);
+	}
+err:
+	if(fp) fclose(fp);
 	return 0;
 }
 
