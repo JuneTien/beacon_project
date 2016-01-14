@@ -23,14 +23,6 @@ var beacon_list_array=[];/*={
 };
 */
 $(document).ready(function(){
-/*
-var data={
-	"service":"set_beacon_config",
-	"uuid":"xxxxx",
-	"chipset":"TI"
-};
-$.getJSON("test.cgi", data);
-*/
 	$("#navbar_list > ul > li").click(function(){
 		$("#setting_pg").hide();
 		$("li").removeClass("active");
@@ -76,11 +68,11 @@ function getBeaconList(){
 		if(!data.match("UUID")) return;
 		var exist=0;
 		var tmp_list={
-			uuid:data.split(",")[0].split(":")[1],
-			major:data.split(",")[1].split(":")[1],
-			minor:data.split(",")[2].split(":")[1],
-			power:data.split(",")[3].split(":")[1],
-			rssi:data.split(",")[4].split(":")[1]
+			uuid:data.split(", ")[0].split(": ")[1],
+			major:data.split(", ")[1].split(": ")[1],
+			minor:data.split(", ")[2].split(": ")[1],
+			power:data.split(", ")[3].split(": ")[1],
+			rssi:data.split(", ")[4].split(": ")[1]
 		};
 		if(total_beacon_num==0){
 			beacon_list_array.push(tmp_list);
@@ -133,16 +125,18 @@ console.log(data);
 
 function table_generator(){
 	$("#list_content").html("");
+	$("#status_content").html("");
+	$("#prediction_content").html("");
 	for(var i=0; i<total_beacon_num; i++){
 		$("#list_content").append(
 			"<tr>"+
 				"<th>"+(i+1)+"</th>"+
-				"<th>"+"</th>"+
 				"<td>"+beacon_list_array[i].uuid+"</td>"+
 				"<td>"+beacon_list_array[i].major+"</td>"+
 				"<td>"+beacon_list_array[i].minor+"</td>"+
 				"<td>"+beacon_list_array[i].power+"</td>"+
 				"<td>"+beacon_list_array[i].rssi+"</td>"+
+				"<td><span class='glyphicon glyphicon-cog' style='color:#4cae4c; cursor:pointer' onClick='setting_page(\""+beacon_list_array[i].uuid+"\")'></span></td>"+
 			"</tr>"
 		);
 		$("#status_content").append(
@@ -162,8 +156,9 @@ function table_generator(){
 	}
 }
 
-function setting_page(){
+function setting_page(uuid){
 	$("#beacon_list_pg").hide();
+	$("#config_uuid").html(uuid);
 	$("#setting_pg").show();
 }
 
@@ -171,6 +166,16 @@ function check_setting(){
 	var checked = confirm("Are you sure the settings is correct?");
 	if(checked){
 		// save setting
+		var data={
+			"service":"set_beacon_config",
+			"uuid":$("#config_uuid").html(),
+			"chipset":$("#chipset_menu").html(),
+			"date":$("#config_date").val(),
+			"txpower":$("#config_txpower").val(),
+			"interval":$("#config_interval").val()
+		};
+		$.getJSON("test_cgi/test.cgi", data);
+
 		$("#setting_pg").hide();
 		$("#beacon_list_pg").show();
 	}else{
@@ -217,7 +222,7 @@ function check_setting(){
 				</tr>
 			</thead>
 			<tbody id="list_content">
-				<tr style="display:">
+				<tr style="display:none">
 					<td>1</td>
 					<td>UUID_string</td>
 					<td>12</td>
@@ -225,11 +230,16 @@ function check_setting(){
 					<td>-59</td>
 					<td>-44</td>
 					<td style="display:">
+						<span class="glyphicon glyphicon-cog" style="color:#4cae4c; cursor:pointer" onClick="setting_page()"></span>
+					</td>
+				<!--
+					<td style="display:">
 						<span class="glyphicon glyphicon-plus-sign" style="color:orange; cursor:pointer" onClick="setting_page()"></span>&nbsp;not complete
 					</td>
 					<td style="display:none">
 						<span class="glyphicon glyphicon-ok-circle" style="color:green;"></span>&nbsp;complete
 					</td>
+				-->
 				</tr>
 			</tbody>
 		</table>
@@ -253,6 +263,10 @@ function check_setting(){
 </div>
 <div id="setting_pg" style="display:none">
 	<div>
+		<span class="label label-info" id="config_uuid"></span>
+	</div>
+	<br>
+	<div>
 		<span>Chipset : </span>
 		<div class="dropdown">
 			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
@@ -269,15 +283,15 @@ function check_setting(){
 	</div>
 	<div>
 		<span>Setup Date : </span>
-		<input type="text" class="form-control" placeholder="YYYY/MM/DD" style="width:200px">
+		<input id="config_date" type="text" class="form-control" placeholder="YYYY/MM/DD" style="width:200px">
 	</div>
 	<div>
 		<span>TX Power : </span>
-		<input type="text" class="form-control" style="width:200px">
+		<input id="config_txpower" type="text" class="form-control" style="width:200px">
 	</div>
 	<div>
 		<span>AdvInterval (ms) : </span>
-		<input type="text" class="form-control" style="width:200px">
+		<input id="config_interval" type="text" class="form-control" style="width:200px">
 	</div>
 	<div>
 		<br>

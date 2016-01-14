@@ -13,8 +13,6 @@ cgi_lib:
 	make -C cgi
 
 install:
-	cp -a ./test.cgi ../
-
 
 clean: 
 	make -C cgi clean

@@ -42,8 +42,10 @@ if [[ $1 == "parse" ]]; then
 						echo "$UUID $MAJOR $MINOR $POWER $RSSI"
 					else
 						if [ $g -eq 0 ]; then
-							#echo "UUID: $UUID MAJOR: $MAJOR MINOR: $MINOR POWER: $POWER RSSI: $RSSI"
+							#echo "UUID: $UUID MAJOR: $MAJOR MINOR: $MINOR POWER: $POWER RSSI: $RSSI POWER: $POWER"
 							echo "UUID: $UUID, MAJOR: $MAJOR, MINOR: $MINOR, POWER: $POWER, RSSI: $RSSI" > beacon_list
+							./ibeacon_scan &
+							exit 0
 						fi
 					fi
 				fi

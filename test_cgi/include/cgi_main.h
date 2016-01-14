@@ -36,6 +36,7 @@ int setup(void);
 int upgrade(void);
 int run_service(char *service, LIST *cgi_input);
 int set_beacon_config(LIST *cgi_input);
+int get_beacon_info(LIST *cgi_input);
 
 #endif
 
